@@ -34,6 +34,7 @@ export const FourSkillsView: React.FC<Props> = ({
 }) => {
   // Listen Mode State
   const [playingId, setPlayingId] = useState<number | null>(null);
+  const [playingSlow, setPlayingSlow] = useState<boolean>(false);
 
   // Write Mode State
   const [writePhraseIndex, setWritePhraseIndex] = useState(0);
@@ -50,11 +51,18 @@ export const FourSkillsView: React.FC<Props> = ({
 
   const handlePlayVoice = (phrase: PhraseItem, slow = false) => {
     setPlayingId(phrase.id);
+    setPlayingSlow(slow);
     onMarkSkill?.('listen');
     playEnglishSpeech(phrase.english, {
       rate: slow ? 0.75 : speechRate,
-      onEnd: () => setPlayingId(null),
-      onError: () => setPlayingId(null)
+      onEnd: () => {
+        setPlayingId(null);
+        setPlayingSlow(false);
+      },
+      onError: () => {
+        setPlayingId(null);
+        setPlayingSlow(false);
+      }
     });
   };
 
@@ -102,7 +110,8 @@ export const FourSkillsView: React.FC<Props> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {CLASSROOM_PHRASES.map((phrase) => {
-              const isPlaying = playingId === phrase.id;
+              const isPlayingNormal = playingId === phrase.id && !playingSlow;
+              const isPlayingSlowCard = playingId === phrase.id && playingSlow;
               return (
                 <div
                   key={phrase.id}
@@ -132,29 +141,37 @@ export const FourSkillsView: React.FC<Props> = ({
                   <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <button
+                        type="button"
                         onClick={() => handlePlayVoice(phrase, false)}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                          isPlaying
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          isPlayingNormal
                             ? 'bg-blue-600 text-white ring-2 ring-blue-300'
-                            : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+                            : 'bg-blue-50 text-blue-700 hover:bg-blue-100 active:scale-95'
                         }`}
                       >
-                        <Volume2 className="w-3.5 h-3.5" />
+                        <Volume2 className={`w-3.5 h-3.5 ${isPlayingNormal ? 'animate-pulse' : ''}`} />
                         <span>Nghe chuẩn</span>
                       </button>
 
                       <button
+                        type="button"
                         onClick={() => handlePlayVoice(phrase, true)}
-                        className="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200"
-                        title="Nghe chậm rõ âm đuôi"
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                          isPlayingSlowCard
+                            ? 'bg-teal-600 text-white ring-2 ring-teal-300'
+                            : 'bg-slate-100 text-slate-700 hover:bg-teal-50 hover:text-teal-800 active:scale-95'
+                        }`}
+                        title="Nghe chậm rõ âm đuôi (0.75x)"
                       >
-                        Chậm 0.75x
+                        <Volume2 className={`w-3.5 h-3.5 ${isPlayingSlowCard ? 'animate-pulse' : 'text-teal-600'}`} />
+                        <span>Chậm 0.75x</span>
                       </button>
                     </div>
 
                     <button
+                      type="button"
                       onClick={() => onOpenPractice(phrase)}
-                      className="text-xs font-bold text-amber-700 hover:text-amber-800"
+                      className="text-xs font-bold text-amber-700 hover:text-amber-800 cursor-pointer"
                     >
                       Luyện nói →
                     </button>

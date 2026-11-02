@@ -45,6 +45,7 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [speechRate, setSpeechRate] = useState<number>(0.9);
   const [currentlyPlayingId, setCurrentlyPlayingId] = useState<number | null>(null);
+  const [currentlyPlayingSlow, setCurrentlyPlayingSlow] = useState<boolean>(false);
   const [isSequencePlaying, setIsSequencePlaying] = useState<boolean>(false);
   const [bookmarkedIds, setBookmarkedIds] = useState<number[]>([]);
   const [onlyBookmarks, setOnlyBookmarks] = useState<boolean>(false);
@@ -116,10 +117,17 @@ export default function App() {
     if (!phrase) return;
 
     setCurrentlyPlayingId(phraseId);
+    setCurrentlyPlayingSlow(slow);
     await playEnglishSpeech(phrase.english, {
       rate: slow ? 0.75 : speechRate,
-      onEnd: () => setCurrentlyPlayingId(null),
-      onError: () => setCurrentlyPlayingId(null)
+      onEnd: () => {
+        setCurrentlyPlayingId(null);
+        setCurrentlyPlayingSlow(false);
+      },
+      onError: () => {
+        setCurrentlyPlayingId(null);
+        setCurrentlyPlayingSlow(false);
+      }
     });
   };
 
@@ -226,25 +234,47 @@ export default function App() {
                 <span className="font-semibold text-slate-700">Tốc độ âm thanh:</span>
                 <div className="inline-flex bg-slate-100 p-0.5 rounded-lg border border-slate-200">
                   <button
-                    onClick={() => setSpeechRate(0.75)}
-                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-colors ${
-                      speechRate === 0.75 ? 'bg-teal-600 text-white' : 'text-slate-600'
+                    type="button"
+                    onClick={() => {
+                      setSpeechRate(0.75);
+                      handlePlayPhrase(currentlyPlayingId || 1, true);
+                    }}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-colors cursor-pointer ${
+                      speechRate === 0.75 ? 'bg-teal-600 text-white' : 'text-slate-600 hover:bg-slate-200'
                     }`}
                   >
                     0.75x (Chậm)
                   </button>
                   <button
-                    onClick={() => setSpeechRate(0.9)}
-                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-colors ${
-                      speechRate === 0.9 ? 'bg-teal-600 text-white' : 'text-slate-600'
+                    type="button"
+                    onClick={() => {
+                      setSpeechRate(0.9);
+                      if (currentlyPlayingId) {
+                        playEnglishSpeech(
+                          CLASSROOM_PHRASES.find(p => p.id === currentlyPlayingId)?.english || '',
+                          { rate: 0.9 }
+                        );
+                      }
+                    }}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-colors cursor-pointer ${
+                      speechRate === 0.9 ? 'bg-teal-600 text-white' : 'text-slate-600 hover:bg-slate-200'
                     }`}
                   >
                     0.9x (Chuẩn)
                   </button>
                   <button
-                    onClick={() => setSpeechRate(1.0)}
-                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-colors ${
-                      speechRate === 1.0 ? 'bg-teal-600 text-white' : 'text-slate-600'
+                    type="button"
+                    onClick={() => {
+                      setSpeechRate(1.0);
+                      if (currentlyPlayingId) {
+                        playEnglishSpeech(
+                          CLASSROOM_PHRASES.find(p => p.id === currentlyPlayingId)?.english || '',
+                          { rate: 1.0 }
+                        );
+                      }
+                    }}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-colors cursor-pointer ${
+                      speechRate === 1.0 ? 'bg-teal-600 text-white' : 'text-slate-600 hover:bg-slate-200'
                     }`}
                   >
                     1.0x (Nhanh)
@@ -312,7 +342,8 @@ export default function App() {
                 <PhraseCard
                   key={phrase.id}
                   phrase={phrase}
-                  isPlaying={currentlyPlayingId === phrase.id}
+                  isPlaying={currentlyPlayingId === phrase.id && !currentlyPlayingSlow}
+                  isPlayingSlow={currentlyPlayingId === phrase.id && currentlyPlayingSlow}
                   onPlay={handlePlayPhrase}
                   onOpenPractice={(p) => setPracticePhrase(p)}
                   speechRate={speechRate}

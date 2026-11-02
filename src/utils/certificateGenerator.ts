@@ -57,7 +57,7 @@ export function generateAndDownloadCertificate(info: CertificateInfo): Promise<v
       ctx.textAlign = 'center';
       ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
       ctx.fillStyle = '#475569';
-      ctx.fillText('PHÒNG GIÁO DỤC VÀ ĐÀO TẠO · THÀNH PHỐ ĐÀ NẴNG', 800, 140);
+      ctx.fillText('ỦY BAN NHÂN DÂN PHƯỜNG HÒA XUÂN', 800, 140);
 
       ctx.font = '900 36px "Plus Jakarta Sans", sans-serif';
       ctx.fillStyle = '#0F766E'; // Teal

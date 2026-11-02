@@ -7,6 +7,7 @@ import { startChantMetronome, stopChantMetronome } from '../utils/soundEffects';
 interface Props {
   phrase: PhraseItem;
   isPlaying: boolean;
+  isPlayingSlow?: boolean;
   onPlay: (phraseId: number, slow?: boolean) => void;
   onOpenPractice: (phrase: PhraseItem) => void;
   speechRate: number;
@@ -17,6 +18,7 @@ interface Props {
 export const PhraseCard: React.FC<Props> = ({
   phrase,
   isPlaying,
+  isPlayingSlow = false,
   onPlay,
   onOpenPractice,
   speechRate,
@@ -138,8 +140,9 @@ export const PhraseCard: React.FC<Props> = ({
         <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={() => onPlay(phrase.id, false)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                 isPlaying
                   ? 'bg-indigo-600 text-white ring-2 ring-indigo-300 ring-offset-1'
                   : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 active:scale-95'
@@ -151,17 +154,24 @@ export const PhraseCard: React.FC<Props> = ({
             </button>
 
             <button
+              type="button"
               onClick={() => onPlay(phrase.id, true)}
-              className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+                isPlayingSlow
+                  ? 'bg-teal-600 text-white ring-2 ring-teal-300 ring-offset-1'
+                  : 'text-slate-700 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 active:scale-95'
+              }`}
               title="Nghe tốc độ chậm cho học sinh tiểu học (0.75x)"
             >
+              <Volume2 className={`w-3.5 h-3.5 ${isPlayingSlow ? 'animate-pulse' : 'text-teal-600'}`} />
               <span>Chậm 0.75x</span>
             </button>
           </div>
 
           <button
+            type="button"
             onClick={() => onOpenPractice(phrase)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-amber-900 bg-amber-100/90 rounded-lg hover:bg-amber-200 transition-all active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-amber-900 bg-amber-100/90 rounded-lg hover:bg-amber-200 transition-all active:scale-95 cursor-pointer"
             title="Luyện nói thử thách micro"
           >
             <Mic className="w-3.5 h-3.5 text-amber-700" />

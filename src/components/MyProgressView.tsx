@@ -190,7 +190,7 @@ export const MyProgressView: React.FC<Props> = ({ activeTeacher, stars, onOpenPr
           <SchoolLogo size={42} className="w-10 h-10" />
           <div className="text-left leading-tight">
             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-              PHÒNG GIÁO DỤC VÀ ĐÀO TẠO · TP ĐÀ NẴNG
+              ỦY BAN NHÂN DÂN PHƯỜNG HÒA XUÂN
             </div>
             <div className="text-xs sm:text-sm font-black uppercase text-teal-900 tracking-wider">
               TRƯỜNG TIỂU HỌC LÊ KIM LĂNG

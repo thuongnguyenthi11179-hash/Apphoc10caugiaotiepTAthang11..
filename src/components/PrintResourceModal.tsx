@@ -157,7 +157,7 @@ export const PrintResourceModal: React.FC<Props> = ({
                 <SchoolLogo size={48} className="w-12 h-12" />
                 <div className="text-left">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
-                    PHÒNG GD&ĐT · THÀNH PHỐ ĐÀ NẴNG
+                    ỦY BAN NHÂN DÂN PHƯỜNG HÒA XUÂN
                   </div>
                   <div className="text-base font-black uppercase text-teal-800">
                     TRƯỜNG TIỂU HỌC LÊ KIM LĂNG
