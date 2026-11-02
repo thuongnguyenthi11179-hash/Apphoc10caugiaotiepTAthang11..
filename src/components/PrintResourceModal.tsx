@@ -207,7 +207,7 @@ export const PrintResourceModal: React.FC<Props> = ({
                   <div className="font-bold text-slate-800">HIỆU TRƯỞNG</div>
                   <div className="text-[10px] text-slate-400 italic">(Ký tên và đóng dấu)</div>
                   <div className="h-10"></div>
-                  <div className="font-bold text-rose-800">TRƯỜNG TH LÊ KIM LĂNG</div>
+                  <div className="font-bold text-rose-800">Ngô Thị Lý</div>
                 </div>
               </div>
 

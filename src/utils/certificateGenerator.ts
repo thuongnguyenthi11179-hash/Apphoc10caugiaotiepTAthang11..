@@ -153,7 +153,7 @@ export function generateAndDownloadCertificate(info: CertificateInfo): Promise<v
       ctx.fillText('(Ký tên và đóng dấu)', 1240, 960);
       ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
       ctx.fillStyle = '#991B1B';
-      ctx.fillText('TRƯỜNG TH LÊ KIM LĂNG', 1240, 1040);
+      ctx.fillText('Ngô Thị Lý', 1240, 1040);
 
       // 9. Convert to Blob & Download
       canvas.toBlob((blob) => {
